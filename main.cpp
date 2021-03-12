@@ -166,6 +166,7 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
                 m = (getRandomValue(dados));
 
             } while (arv.busca(m->codcidade));
+            
             arv.insere(m->codcidade);
         }
         arv.imprime((n < 20) ? cout : filestream);
