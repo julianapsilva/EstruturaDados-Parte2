@@ -1,9 +1,10 @@
-#include "hash.h"
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <string.h>
+#include <iostream>
 
+#include "hash.h"
 
 HashTable::HashTable(int tam){
     this->tam=tam;
@@ -26,39 +27,53 @@ int HashTable::funct(string data, int cod,int j){
 
         return key;
 }
-NodeHT* HashTable::busca(string data, int cod){
+int HashTable::getIndice(string data, int cod) {
     bool equals;
-    int j=0,i;
-    do{
-        i=funct(data,cod,j++);
-        equals=tabela[i]->equals(data,cod);
-    }
-    while(tabela[i]!=NULL && !equals && j<tam);
-    if(j<tam && equals)
-    return tabela[i];
-    else return NULL;
+    int j = 0, i=0;
+
+    do {
+        i = funct(data, cod, j++);
+        equals = tabela[i]->equals(data, cod);
+
+         } while (tabela[i] != NULL && !equals && j < tam);
+    if (tabela[i] == NULL)
+        return -1.;
+return i;
+   
 }
-void HashTable::insere(NodeHT *item){
+NodeHT* HashTable::busca(string data, int cod){
+    int i = getIndice(data, cod);
+    if (i!=-1)
+        return tabela[i];
+    else return NULL;
+
+}
+void HashTable::insereaux(NodeHT *item){
 
     int i; int j = 0;
     do{
         i=funct(item->data,item->codcidade,j++);
-        if(j>100)
-            std::cout<<j<<std::endl;
+       
+
     }
     while(tabela[i]!=NULL);
+    std::cout << i;
+
     tabela[i]=&(*item);
+
     tabela[i];
 }
 
-void HashTable::print(){
-    for(int i=0;i<1000;i++)
+void HashTable::print(std::ostream &o){
+
+    o<<"TABELA HASH TAMANHO "<<tam<<" LOTACAO"<<std::endl;
+    for(int i=0;i<tam;i++)
     {
         if(tabela[i]!=NULL){
             string aux = tabela[i]->toString();
-            std::cout<<aux;
+           (o) << i <<"" <<aux << std::endl;
 
         }
-        }
+}
 }
 

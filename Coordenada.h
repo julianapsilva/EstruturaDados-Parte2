@@ -13,6 +13,7 @@ struct coord{
         y=b.y;
     }
 };
+
 typedef struct coord coord;
 
 

@@ -108,21 +108,21 @@ bool ArvoreAVL::auxBusca(NoArv *p, int val)
 }
 
 
-void ArvoreAVL::imprime()
+void ArvoreAVL::imprime(std::ostream& o)
 {
-    imprimePorNivel(raiz, 0);
+    imprimePorNivel(raiz, 0,o);
 }
 
-void ArvoreAVL::imprimePorNivel(NoArv *p, int nivel)
+void ArvoreAVL::imprimePorNivel(NoArv *p, int nivel,std::ostream &o)
 {
     if(p != NULL)
     {
-        cout << "(" << nivel << ")";
+        o << "(" << nivel << ")";
         for(int i = 1; i <= nivel; i++)
-            cout << "--";
-        cout << p->getInfo() << endl;
-        imprimePorNivel(p->getEsq(), nivel+1);
-        imprimePorNivel(p->getDir(), nivel+1);
+            o << "--";
+        o << p->getInfo() << endl;
+        imprimePorNivel(p->getEsq(), nivel+1,o);
+        imprimePorNivel(p->getDir(), nivel+1,o);
     }
 }
 
