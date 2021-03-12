@@ -10,7 +10,9 @@
 #include <stdlib.h>
 #include "ArvoreAVL.h"
 #include "ArvoreB.h"
+#include <time.h>       /* time */
 
+#include <random>
 
 using namespace std;
 int leArqProcessado(HashTable* ht, string endr,int n){
@@ -75,14 +77,26 @@ int leArqCord(ArvBinBusca* ht, string endr, int n) {
 
 }
 int random(int min, int max) {
-    return rand() % (max + 1 - min) + min;
 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::uniform_real_distribution<> distribution(min, max);
+
+    //generating a random integer:
+    int random = distribution(gen);
+    return random;
 }
+
+
 NodeHT* getRandomValue(HashTable* ht){
-    int i=0;
-    do
-        i=random(0,ht->getTam());
-    while(ht->operator[](i)==NULL);
+    srand(time(NULL));
+
+    
+    int i = 0, max = ht->getTam();
+    do{
+        i = random(0, max);
+    } while(ht->operator[](i)==NULL);
 
     NodeHT* n= ht->operator[](i);
     return n;
@@ -91,7 +105,6 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
 
     ofstream filestream("filename.txt");
 
-    loc->imprime(filestream);
     switch (op) {
     case 1: {
         HashTable h(n + n / 20);
@@ -109,8 +122,11 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
         ArvoreAVL arv;
 
         for (int i = 0; i < n; i++) {
-
-            NodeHT* m = (getRandomValue(dados));
+            NodeHT* m;
+            do {
+                m = (getRandomValue(dados));
+               
+            } while (arv.busca(m->codcidade));
             arv.insere(m->codcidade);
         }
         arv.imprime((n < 20) ? cout : filestream);
@@ -122,10 +138,14 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
         ArvBinBusca arv;
         for (int i = 0; i < n; i++) {
 
-            NodeHT* m = (getRandomValue(dados));
-            NoQArv* na = loc->busca(m->codcidade);
-            if (na == NULL)
-                std::cout << "asdad";
+            NodeHT* m;
+            NoQArv* na;
+            do {
+                m = (getRandomValue(dados));
+               na = loc->busca(m->codcidade);
+
+            } while (arv.busca(m->codcidade)==NULL);
+           
             arv.insere(na);
         }
 
@@ -141,7 +161,11 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
 
         for (int i = 0; i < n; i++) {
 
-            NodeHT* m = (getRandomValue(dados));
+            NodeHT* m;
+          do {
+                m = (getRandomValue(dados));
+
+            } while (arv.busca(m->codcidade));
             arv.insere(m->codcidade);
         }
         arv.imprime((n < 20) ? cout : filestream);
@@ -155,11 +179,12 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
 int main()
 {
 
-    HashTable* ht=new HashTable(2000069);
+    HashTable* ht=new HashTable(20000069);
     ArvBinBusca* Q=new ArvBinBusca ();
-    leArqProcessado(ht,"processado.csv",1000);
+    leArqProcessado(ht,"processado.csv",100000);
     leArqCord(Q, "coordenadas.csv", -1);
-    ht->print(cout);
+    teste(50, 1, ht, Q);
+    teste(50, 2, ht, Q);
     teste(50,4,ht,Q);
     return 0;
 }

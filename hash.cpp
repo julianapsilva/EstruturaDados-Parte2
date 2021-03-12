@@ -20,11 +20,13 @@ int HashTable::funct(string data, int cod,int j){
     int mes = atoi(strtok(NULL, "-"));
     int dia = atoi(strtok(NULL, "-"));
 
-    int cidade=(cod%10)%1000;
+    int cidade=cod;
     int estado=(cod/1000);
 
-    double key= ((cidade*dia + mes*estado)+j*j)%tam;
-
+    long long k= (cidade*dia + j*j );
+    int key = k % tam;
+    if (key < 0 || key>tam)
+        std::cout << "aaa";
         return key;
 }
 int HashTable::getIndice(string data, int cod) {
@@ -57,7 +59,6 @@ void HashTable::insereaux(NodeHT *item){
 
     }
     while(tabela[i]!=NULL);
-    std::cout << i;
 
     tabela[i]=&(*item);
 
