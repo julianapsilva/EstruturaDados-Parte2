@@ -12,10 +12,9 @@ class ArvoreB
     public:
     ArvoreB(int ordem);
     ArvoreB(int dMin, HashTable *t);
-    void insere(string data, int codCidade);
+    void insere(int val);
     int busca(int val);
     void imprime(ostream &o);
-    void imprime();
 };
 
 

@@ -4,6 +4,12 @@
 
 using namespace std;
 
+ArvoreB::ArvoreB(int dMin)
+{
+    raiz = NULL;
+    this->ordem=2*dMin;
+}
+
 ArvoreB::ArvoreB(int dMin, HashTable *t)
 {
     raiz = NULL;
@@ -16,35 +22,37 @@ int ArvoreB::busca(int val)
 {
     if(raiz==NULL)
         return 0;
-    else
-       return raiz->busca(val);
+    else{
+        NoB* aux= new NoB(ordem,t);
+        aux=raiz;
+        return aux->busca(val);
+    }
+       // return raiz->busca(val);
 }
 
-void ArvoreB::insere(string data, int codCidade){
+void ArvoreB::insere(int val){
 
     if(raiz == NULL){
-        raiz = new NoB(ordem,t);
+        raiz = new NoB(ordem);
         raiz->setFolha(true);
-        raiz->setChave(t->getIndice(data,codCidade),0);
+        raiz->setChave(val,0);
         raiz->setN(1);
 
     }
     else{
         if(raiz->getN()==ordem-1){   //raiz esta cheia
-            NoB* novo= new NoB(ordem,t);
+            NoB* novo= new NoB(ordem);
             novo->setFolha(false);
             novo->setFilho(raiz,0);
-            novo->divideFilho(raiz,0);
+            novo->divideFilho(novo,0);
             int i = 0;
-            /*if(t->getCidade(novo->getChave(0)) < codCidade ||
-                (t->getCidade(novo->getChave(0))==codCidade && t->getData(novo->getChave(0)) < data) ) */
-                if(t->getCidade(novo->getChave(0)) < codCidade)
+            if(novo->getChave(0) < val )
                 i++;
-            novo->getFilho(i)->insereComEspaco(data,codCidade);
+            novo->getFilho(i)->insereComEspaco(val);
             raiz=novo;
     }
         else{
-            raiz->insereComEspaco(data,codCidade);
+            raiz->insereComEspaco(val);
         }
 
     }
@@ -55,8 +63,3 @@ void ArvoreB::imprime(ostream & o){
         raiz->imprime(o);
 }
 
-
-void ArvoreB::imprime(){
-    if(raiz!=NULL)
-        raiz->imprime();
-}

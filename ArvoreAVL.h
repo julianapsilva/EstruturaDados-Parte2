@@ -6,19 +6,18 @@
 class ArvoreAVL
 {
 public:
+    ArvoreAVL();
     ArvoreAVL(HashTable *t);
     int busca(int val);
-    void insere(string data, int codCidade);
-   // void imprime(std::ostream&);
+    void insere(int val);
+    void imprime(std::ostream&);
     int calculaAltura(NoArv *p);
-    void imprime();
 
 private:
     HashTable* h;
-    void imprimePorNivel(NoArv* p, int nivel);
     NoArv* raiz; // ponteiro para o No raiz da árvore
     int auxBusca(NoArv *p, int val);
-    NoArv* auxInsere(NoArv *p, string data, int codCidade);
+    NoArv* auxInsere(NoArv *p, int val);
     void imprimePorNivel(NoArv* p, int nivel,std::ostream&);
     NoArv* rotSimplesEsq(NoArv* p);
     NoArv* rotSimplesDir(NoArv* p);

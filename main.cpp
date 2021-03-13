@@ -9,39 +9,73 @@
 #include <sstream>
 #include <stdlib.h>
 #include "ArvoreAVL.h"
-#include "Arquivo.h"
 #include "ArvoreB.h"
 #include <time.h>       /* time */
 
 #include <random>
 
 using namespace std;
+int leArqProcessado(HashTable* ht, string endr,int n){
+    ifstream arq(endr);
+    if(!arq.is_open())
+        return -1;
+    string str;
+    int i=0;
+    getline(arq, str);
+    while(getline(arq,str))
+    {
 
-int j=0;
-bool Existe(int valores[],int tam, int valor){
-    for(int i = 0;i<tam;i++){
-        if(valores[i]==valor)
-            return true;
+      char *subdado;
+      subdado = strtok( &str[0], ",");
+      string data=subdado;
+      subdado = strtok( NULL, ",");
+      string estado= subdado;
+      subdado = strtok( NULL, ",");
+      string cidade= subdado;
+      subdado = strtok( NULL, ",");
+      int cod= atoi(subdado);
+      subdado = strtok( NULL, ",");
+      int casos= atoi(subdado);
+      subdado = strtok( NULL, ",");
+      int  mortes= atoi(subdado);
+      ht->insere(cod,data,cidade,estado,casos,mortes);
+        if(i++>n && n!=-1)
+            break;
     }
-    return false;
+    return 0;
+
 }
+int leArqCord(ArvBinBusca* ht, string endr, int n) {
+    ifstream arq(endr);
+    if (!arq.is_open())
+        return -1;
+    string str;
+    int i = 0;
+    getline(arq, str);
 
-void GeraAleatorios(int numeros[],int quantNumeros,int Limite){
-    srand(time(NULL));
+    while (getline(arq, str))
+    {
 
-    int v;
-    for(int i=0;i<quantNumeros;i++){
-        v = rand() % Limite;
-        while(Existe(numeros,i,v)){
-            v = rand() % Limite;
-        }
-        numeros[i] = v;
+        char* subdado;
+        subdado = strtok(&str[0], ",");
+        int estado = atoi(subdado);
+        subdado = strtok(NULL, ",");
+        int cidade = atoi(subdado)/10;
+        subdado = strtok(NULL, ",");
+        string nome = subdado;
+        subdado = strtok(NULL, ",");
+        int x = atoi(subdado);
+        subdado = strtok(NULL, ",");
+        int  y = atoi(subdado);
+        subdado = strtok(NULL, ",");
+        int  cap = atoi(subdado);
+        ht->insere(estado,  cidade,nome, x,y,cap);
+        if (i++ > n && n != -1)
+            break;
     }
+    return 0;
 
 }
-
-/*
-
 int random(int min, int max) {
 
     std::random_device rd;
@@ -50,39 +84,28 @@ int random(int min, int max) {
     std::uniform_real_distribution<> distribution(min, max);
 
     //generating a random integer:
-   // int x = distribution(gen);
-
-     unsigned long x;
-    x = rand();
-    x <<= 15;
-    x ^= rand();
-    x %= max;
-
-    return x;
-}*/
-
-NodeHT* getRandomValue(HashTable* ht){
-    srand(time(NULL)); int random[10000];
-    GeraAleatorios(random,10000,10000);   cout<< "gerou " << endl;
-
-    int i = 0, max = ht->getTam();
-    do{ i=random[j++];  cout<< "do " << endl;
-        //i = random(0, max);
-       // i=rand() % 32000;
-       //  cout<< "valor de i " << i << endl;
-
-    } while(ht->operator[](i)==NULL);
-
-    NodeHT* n= ht->operator[](i);   cout<< "valor de i FINAL " << i << endl;
-    return n;
+    int random = distribution(gen);
+    return random;
 }
 
-/*
+
+NodeHT* getRandomValue(HashTable* ht){
+    srand(time(NULL));
+
+    
+    int i = 0, max = ht->getTam();
+    do{
+        i = random(0, max);
+    } while(ht->operator[](i)==NULL);
+
+    NodeHT* n= ht->operator[](i);
+    return n;
+}
 void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
 
     ofstream filestream("filename.txt");
-    //  loc->imprime(filestream);
-        switch (op) {
+
+    switch (op) {
     case 1: {
         HashTable h(n + n / 20);
 
@@ -96,15 +119,15 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
     }
 
     case 2: {
-        ArvoreAVL arv(dados);
+        ArvoreAVL arv;
 
         for (int i = 0; i < n; i++) {
-            NodeHT* m; int k;
+            NodeHT* m;
             do {
-                k = hashAleatorio(dados);
-                m = (dados)->operator[](k);
-            } while (arv.busca(k) || m==NULL );
-            arv.insere(k);
+                m = (getRandomValue(dados));
+               
+            } while (arv.busca(m->codcidade));
+            arv.insere(m->codcidade);
         }
         arv.imprime((n < 20) ? cout : filestream);
 
@@ -120,9 +143,9 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
             do {
                 m = (getRandomValue(dados));
                na = loc->busca(m->codcidade);
-            } while (arv.busca(m->codcidade)!=NULL || na==nullptr);
 
-
+            } while (arv.busca(m->codcidade)==NULL);
+           
             arv.insere(na);
         }
 
@@ -134,17 +157,16 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
 
 
     case 4: {
-        ArvoreB arv(4,dados);
+        ArvoreB arv(4);
 
         for (int i = 0; i < n; i++) {
 
+            NodeHT* m;
+          do {
+                m = (getRandomValue(dados));
 
-            NodeHT* m; int k;
-            do {
-                k = hashAleatorio(dados);
-                m = (dados)->operator[](k);
-            } while (arv.busca(k)!=-1 || m == NULL);
-
+            } while (arv.busca(m->codcidade));
+            
             arv.insere(m->codcidade);
         }
         arv.imprime((n < 20) ? cout : filestream);
@@ -154,59 +176,16 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
     }
 
 
-}*/
-void analiseBusca(int n, HashTable* h, int codCidade) {  cout<< "chamoiu busca " << endl;
-ofstream filestream("filename.txt");
-    ArvoreAVL avl(h); ArvoreB bMenor(5, h); ArvoreB bMaior(200, h); NodeHT *m;
-
-    //for (int t = 0; t < 5; t++) {   // 5 diferentes conjuntos
-        for (int i = 0; i < n; i++) {   cout<< "for index  "<<  i  << endl;
-          cout<< "indo gerar aleatorio " << endl;
-          m=getRandomValue(h);
-           // avl.insere(m->data,m->codcidade);    cout<< "INSERIU " << endl;
-
-          //  m=getRandomValue(h);
-            bMenor.insere(m->data,m->codcidade);
-            bMenor.imprime();
-        /*    m=getRandomValue(h);
-            bMaior.insere(m->data,m->codcidade);*/
-        }
-
-
-
-        //BUSCA S1
-       /* cout << avl.busca(codCidade);
-        cout << bMenor.busca(codCidade);
-        cout << bMenor.busca(codCidade);*/
-
-        //FALTA BUSCAS2
-
-   // }
-
-    avl.imprime();
-
 }
-
 int main()
 {
 
-    Arquivo arq;
-    HashTable* ht = new HashTable(2000069);
-    ArvBinBusca* Q = new ArvBinBusca();
-    arq.leArqProcessado(ht, "processado.csv", 100000);
-    arq.leArqCord(Q, "coordenadas.csv", -1);
-
-  analiseBusca(50, ht, 509786);
-
-//   teste(50, 1, ht, Q);
-  // teste(50, 2, ht, Q);
- //  teste(50,3,ht,Q);
-  // teste(50, 4, ht, Q);
-  cout<< "-------- TERMINOU -------" << endl;
-
+    HashTable* ht=new HashTable(20000069);
+    ArvBinBusca* Q=new ArvBinBusca ();
+    leArqProcessado(ht,"processado.csv",100000);
+    leArqCord(Q, "coordenadas.csv", -1);
+    teste(50, 1, ht, Q);
+    teste(50, 2, ht, Q);
+    teste(50,4,ht,Q);
     return 0;
 }
-
-
-
-
