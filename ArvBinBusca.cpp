@@ -29,7 +29,7 @@ NoQArv* ArvBinBusca::auxInsere(NoQArv *p, NoQArv *valu)
     if(p == NULL)
     {
         p = valu;
-     
+
     }
     else if(valu->getCoord().x < p->getCoord().x)
             if(valu->getCoord().y < p->getCoord().y)
@@ -57,7 +57,7 @@ NoQArv* ArvBinBusca::busca(int codC) {
 NoQArv* ArvBinBusca::auxBusca(NoQArv*p,int codC) {
     if (p == NULL)
         return NULL;
-    
+
     if (p->getCodC() == codC)
         return p;
     NoQArv* aux;
