@@ -4,37 +4,38 @@
 
 using namespace std;
 
-ArvoreAVL::ArvoreAVL()
-{
-    raiz = NULL;
-}
-
 ArvoreAVL::ArvoreAVL(HashTable *t)
 {
     raiz = NULL;
     this->h=t;
-
 }
 
-void ArvoreAVL::insere(int val)
+void ArvoreAVL::insere(string data, int codCidade)
 {
-    raiz = auxInsere(raiz, val);
+    raiz = auxInsere(raiz,data, codCidade);
 }
 
-NoArv* ArvoreAVL::auxInsere(NoArv *p, int val)
+NoArv* ArvoreAVL::auxInsere(NoArv *p, string data, int codCidade)
 {
     if(p == NULL)
     {
         p = new NoArv();
-        p->setInfo(val);
+        p->setInfo(h->getIndice(data,codCidade));   cout<< "gerado pela has " << h->getIndice(data,codCidade) << endl;
         p->setEsq(NULL);
         p->setDir(NULL);
         p->setFator(0);
     }
-    else if(h->comparaChaves(val, p->getInfo())==0)
-        p->setEsq(auxInsere(p->getEsq(), val));
+    else if(codCidade< h->getCidade(p->getInfo()))
+         p->setEsq(auxInsere(p->getEsq(),data,codCidade));
+
+        else if(codCidade == h->getCidade(p->getInfo())){
+            if(data < h->getData(p->getInfo()))
+                p->setEsq(auxInsere(p->getEsq(),data,codCidade));
+            else
+                p->setDir(auxInsere(p->getDir(),data,codCidade));
+        }
     else
-        p->setDir(auxInsere(p->getDir(), val));
+        p->setDir(auxInsere(p->getDir(),data,codCidade));
 
     p->setFator(calculaAltura(p->getDir()) - calculaAltura(p->getEsq()));
     return verificaBalanceamento(p);
@@ -117,7 +118,7 @@ int  ArvoreAVL::auxBusca(NoArv *p, int val)
         casos= auxBusca(p->getDir(), val);
         return casos;
 }
-
+/*
 void ArvoreAVL::imprime(std::ostream& o)
 {
     imprimePorNivel(raiz, 0,o);
@@ -134,4 +135,38 @@ void ArvoreAVL::imprimePorNivel(NoArv *p, int nivel,std::ostream &o)
         imprimePorNivel(p->getEsq(), nivel+1,o);
         imprimePorNivel(p->getDir(), nivel+1,o);
     }
+}*/
+
+
+void ArvoreAVL::imprime()
+{
+    imprimePorNivel(raiz, 0);
 }
+
+void ArvoreAVL::imprimePorNivel(NoArv *p, int nivel)
+{
+    if(p != NULL)
+    {
+        cout << "(" << nivel << ")";
+        for(int i = 1; i <= nivel; i++)
+            cout << "--";
+       // cout << p->getInfo() << endl;
+        cout<< "data " << h->getData(p->getInfo()) << " codcidade " << h->getCidade(p->getInfo()) << endl;
+        imprimePorNivel(p->getEsq(), nivel+1);
+        imprimePorNivel(p->getDir(), nivel+1);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
