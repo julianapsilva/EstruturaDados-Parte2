@@ -20,11 +20,13 @@ int HashTable::funct(string data, int cod,int j){
     int mes = atoi(strtok(NULL, "-"));
     int dia = atoi(strtok(NULL, "-"));
 
-    int cidade=(cod%10)%1000;
+    int cidade=cod;
     int estado=(cod/1000);
 
-    double key= ((cidade*dia + mes*estado)+j*j)%tam;
-
+    long long k= (cidade*dia + j*j );
+    int key = k % tam;
+    if (key < 0 || key>tam)
+        std::cout << "aaa";
         return key;
 }
 int HashTable::getIndice(string data, int cod) {
@@ -39,7 +41,7 @@ int HashTable::getIndice(string data, int cod) {
     if (tabela[i] == NULL)
         return -1.;
 return i;
-   
+
 }
 NodeHT* HashTable::busca(string data, int cod){
     int i = getIndice(data, cod);
@@ -53,11 +55,9 @@ void HashTable::insereaux(NodeHT *item){
     int i; int j = 0;
     do{
         i=funct(item->data,item->codcidade,j++);
-       
 
     }
     while(tabela[i]!=NULL);
-    std::cout << i;
 
     tabela[i]=&(*item);
 
@@ -76,4 +76,18 @@ void HashTable::print(std::ostream &o){
         }
 }
 }
+
+
+int HashTable::getCidade(int i){
+    return tabela[i]->codcidade;
+}
+
+int HashTable::getCasos(int i){
+    return tabela[i]->casos;
+}
+
+string HashTable::getData(int i){
+    return tabela[i]->data;
+}
+
 

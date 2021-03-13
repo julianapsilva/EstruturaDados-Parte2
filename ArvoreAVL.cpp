@@ -1,32 +1,41 @@
 #include <iostream>
 #include "ArvoreAVL.h"
+#include "NodeHT.h"
 
 using namespace std;
 
-ArvoreAVL::ArvoreAVL()
+ArvoreAVL::ArvoreAVL(HashTable *t)
 {
     raiz = NULL;
+    this->h=t;
 }
 
-void ArvoreAVL::insere(int val)
+void ArvoreAVL::insere(string data, int codCidade)
 {
-    raiz = auxInsere(raiz, val);
+    raiz = auxInsere(raiz,data, codCidade);
 }
 
-NoArv* ArvoreAVL::auxInsere(NoArv *p, int val)
+NoArv* ArvoreAVL::auxInsere(NoArv *p, string data, int codCidade)
 {
     if(p == NULL)
     {
         p = new NoArv();
-        p->setInfo(val);
+        p->setInfo(h->getIndice(data,codCidade));   cout<< "gerado pela has " << h->getIndice(data,codCidade) << endl;
         p->setEsq(NULL);
         p->setDir(NULL);
         p->setFator(0);
     }
-    else if(val < p->getInfo())
-        p->setEsq(auxInsere(p->getEsq(), val));
+    else if(codCidade< h->getCidade(p->getInfo()))
+         p->setEsq(auxInsere(p->getEsq(),data,codCidade));
+
+        else if(codCidade == h->getCidade(p->getInfo())){
+            if(data < h->getData(p->getInfo()))
+                p->setEsq(auxInsere(p->getEsq(),data,codCidade));
+            else
+                p->setDir(auxInsere(p->getDir(),data,codCidade));
+        }
     else
-        p->setDir(auxInsere(p->getDir(), val));
+        p->setDir(auxInsere(p->getDir(),data,codCidade));
 
     p->setFator(calculaAltura(p->getDir()) - calculaAltura(p->getEsq()));
     return verificaBalanceamento(p);
@@ -90,24 +99,26 @@ int ArvoreAVL::calculaAltura(NoArv *p)  // calcula altura do no
 }
 
 
-bool ArvoreAVL::busca(int val)
+int ArvoreAVL::busca(int val)
 {
     return auxBusca(raiz, val);
 }
 
-bool ArvoreAVL::auxBusca(NoArv *p, int val)
+int  ArvoreAVL::auxBusca(NoArv *p, int val)
 {
+    int casos=0;
     if(p == NULL)
-        return false;
-    else if(p->getInfo() == val)
-        return true;
-    else if(val < p->getInfo())
-        return auxBusca(p->getEsq(), val);
+        return 0;
+    else if(h->getCidade(p->getInfo()) == val){
+        casos+=h->getCasos(p->getInfo());
+    }
+    else if(val < h->getCidade(p->getInfo()))
+        casos= auxBusca(p->getEsq(), val);
     else
-        return auxBusca(p->getDir(), val);
+        casos= auxBusca(p->getDir(), val);
+        return casos;
 }
-
-
+/*
 void ArvoreAVL::imprime(std::ostream& o)
 {
     imprimePorNivel(raiz, 0,o);
@@ -124,5 +135,38 @@ void ArvoreAVL::imprimePorNivel(NoArv *p, int nivel,std::ostream &o)
         imprimePorNivel(p->getEsq(), nivel+1,o);
         imprimePorNivel(p->getDir(), nivel+1,o);
     }
+}*/
+
+
+void ArvoreAVL::imprime()
+{
+    imprimePorNivel(raiz, 0);
 }
+
+void ArvoreAVL::imprimePorNivel(NoArv *p, int nivel)
+{
+    if(p != NULL)
+    {
+        cout << "(" << nivel << ")";
+        for(int i = 1; i <= nivel; i++)
+            cout << "--";
+       // cout << p->getInfo() << endl;
+        cout<< "data " << h->getData(p->getInfo()) << " codcidade " << h->getCidade(p->getInfo()) << endl;
+        imprimePorNivel(p->getEsq(), nivel+1);
+        imprimePorNivel(p->getDir(), nivel+1);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 

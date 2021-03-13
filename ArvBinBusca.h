@@ -1,6 +1,5 @@
 #ifndef ARVBINBUSCA_H_INCLUDED
 #define ARVBINBUSCA_H_INCLUDED
-
 #include "NoQArv.h"
 #include "Coordenada.h"
 #include <iostream>
@@ -17,14 +16,14 @@ public:
     void insere(NoQArv* n);
 
     NoQArv* busca(int);
-  
+
 
 
 private:
     NoQArv* raiz; // ponteiro para o No raiz da árvore
     NoQArv* auxBusca(NoQArv *p, coord val);
     NoQArv* auxBusca(NoQArv* p, int );
-    
+
     NoQArv* auxInsere(NoQArv *p, NoQArv *val);
     void imprimePorNivel(NoQArv* p, int nivel,std::ostream&o);
     NoQArv* libera(NoQArv *p);

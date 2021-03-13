@@ -1,0 +1,116 @@
+# depslib dependency file v1.0
+1615554454 source:c:\users\juliana\documents\programação\pastaedii\arvbinbusca.cpp
+	<iostream>
+	"ArvBinBusca.h"
+
+1615554415 c:\users\juliana\documents\programação\pastaedii\arvbinbusca.h
+	"NoQArv.h"
+	"Coordenada.h"
+	<iostream>
+	<ostream>
+
+1615554416 c:\users\juliana\documents\programação\pastaedii\noqarv.h
+	"Coordenada.h"
+	<string>
+
+1615315034 c:\users\juliana\documents\programação\pastaedii\coordenada.h
+
+1615659805 source:c:\users\juliana\documents\programação\pastaedii\arvoreavl.cpp
+	<iostream>
+	"ArvoreAVL.h"
+	"NodeHT.h"
+
+1615657346 c:\users\juliana\documents\programação\pastaedii\arvoreavl.h
+	"NoArv.h"
+	"hash.h"
+
+1615315035 c:\users\juliana\documents\programação\pastaedii\noarv.h
+
+1615649439 source:c:\users\juliana\documents\programação\pastaedii\hash.cpp
+	<iostream>
+	<string>
+	<cstdlib>
+	<string.h>
+	<iostream>
+	"hash.h"
+
+1615649439 c:\users\juliana\documents\programação\pastaedii\hash.h
+	<string>
+	<iostream>
+	<fstream>
+	"NodeHT.h"
+
+1615567454 c:\users\juliana\documents\programação\pastaedii\nodeht.h
+	<string>
+
+1615314746 source:c:\users\juliana\documents\programação\pastaedii\noarv.cpp
+
+1615662382 source:c:\users\juliana\documents\programação\pastaedii\main.cpp
+	<iostream>
+	<ostream>
+	<fstream>
+	<string>
+	<cstdlib>
+	<string.h>
+	"ArvBinBusca.h"
+	"hash.h"
+	"Arquivo.h"
+	<sstream>
+	<stdlib.h>
+	"ArvoreAVL.h"
+	"ArvoreB.h"
+	<time.h>
+	<random>
+	<iostream>
+	<ostream>
+	<fstream>
+	<string>
+	<cstdlib>
+	<string.h>
+	"ArvBinBusca.h"
+	"hash.h"
+	<sstream>
+	<stdlib.h>
+	"ArvoreAVL.h"
+	"Arquivo.h"
+	"ArvoreB.h"
+	<time.h>
+	<random>
+
+1615661227 source:c:\users\juliana\documents\programação\pastaedii\arvoreb.cpp
+	"ArvoreB.h"
+	"NoB.h"
+	<iostream>
+
+1615661227 c:\users\juliana\documents\programação\pastaedii\arvoreb.h
+	"NoB.h"
+
+1615661227 c:\users\juliana\documents\programação\pastaedii\nob.h
+	<iostream>
+	"NodeHT.h"
+	"hash.h"
+
+1615663377 source:c:\users\juliana\documents\programação\pastaedii\nob.cpp
+	"NoB.h"
+	"hash.h"
+	"NodeHT.h"
+	<iostream>
+
+1615575443 c:\users\juliana\documents\programação\pastaedii\arquivo.h
+	"hash.h"
+	"ArvBinBusca.h"
+
+1615575665 source:c:\users\juliana\documents\programação\pastaedii\arquivo.cpp
+	<iostream>
+	<ostream>
+	<fstream>
+	<string>
+	<cstdlib>
+	<string.h>
+	"ArvBinBusca.h"
+	"hash.h"
+	"Arquivo.h"
+	<sstream>
+	<stdlib.h>
+	"ArvoreB.h"
+

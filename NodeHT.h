@@ -15,8 +15,8 @@ public :
         this->cidade=cidade;
         this->codcidade=codcidade;
         this->mortes=mortes;
-    this->casos=casos;
-    this->estado = estado;
+        this->casos=casos;
+        this->estado = estado;
     }
     string toString(){return  cidade;};
     bool equals(string dt,int cod){

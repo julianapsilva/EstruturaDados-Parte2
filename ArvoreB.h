@@ -6,13 +6,16 @@ class ArvoreB
 {
     private:
     NoB* raiz;
+    HashTable *t;
     int ordem;
 
     public:
     ArvoreB(int ordem);
-    void insere(int val);
-    bool busca(int val);
+    ArvoreB(int dMin, HashTable *t);
+    void insere(string data, int codCidade);
+    int busca(int val);
     void imprime(ostream &o);
+    void imprime();
 };
 
 
