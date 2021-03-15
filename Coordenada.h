@@ -1,9 +1,9 @@
 #ifndef COORDENADA_H_INCLUDED
 #define COORDENADA_H_INCLUDED
-
+#include <sstream>
 struct coord{
-    int x=NULL;
-    int y=NULL;
+    double x=NULL;
+     double y=NULL;
 
     bool operator ==(coord b){
     return(x==b.x&&y==b.y);
@@ -15,5 +15,15 @@ struct coord{
 };
 typedef struct coord coord;
 
+inline std::string doubletos(double c)
+{
+    std::ostringstream o;
+    o << c;
 
+    return o.str();
+};
+
+inline std::string printCoord(coord c) {
+    return "La[" + doubletos(c.x) + "] Lo[" + doubletos(c.y) + "]";
+}
 #endif // COORDENADA_H_INCLUDED

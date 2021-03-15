@@ -1,6 +1,8 @@
 #include <iostream>
 #include "ArvoreAVL.h"
 #include "NodeHT.h"
+#include <chrono>
+using namespace std::chrono;
 
 using namespace std;
 
@@ -12,7 +14,12 @@ ArvoreAVL::ArvoreAVL(HashTable *t)
 
 void ArvoreAVL::insere(string data, int codCidade)
 {
+    high_resolution_clock::time_point inicio = high_resolution_clock::now();
+
     raiz = auxInsere(raiz,data, codCidade);
+
+    high_resolution_clock::time_point fim = high_resolution_clock::now();
+    tempoInsercao=duration_cast<duration<double>>(fim - inicio).count();
 }
 
 NoArv* ArvoreAVL::auxInsere(NoArv *p, string data, int codCidade)
@@ -20,7 +27,7 @@ NoArv* ArvoreAVL::auxInsere(NoArv *p, string data, int codCidade)
     if(p == NULL)
     {
         p = new NoArv();
-        p->setInfo(h->getIndice(data,codCidade));   cout<< "gerado pela has " << h->getIndice(data,codCidade) << endl;
+        p->setInfo(h->getIndice(data,codCidade));
         p->setEsq(NULL);
         p->setDir(NULL);
         p->setFator(0);
@@ -101,24 +108,29 @@ int ArvoreAVL::calculaAltura(NoArv *p)  // calcula altura do no
 
 int ArvoreAVL::busca(int val)
 {
+    high_resolution_clock::time_point inicio = high_resolution_clock::now();
+
     return auxBusca(raiz, val);
+
+    high_resolution_clock::time_point fim = high_resolution_clock::now();
+    tempoBusca=duration_cast<duration<double>>(fim - inicio).count();
 }
 
 int  ArvoreAVL::auxBusca(NoArv *p, int val)
 {
-    int casos=0;
+    int casos=0; comparacoes=0;
     if(p == NULL)
         return 0;
+
     else if(h->getCidade(p->getInfo()) == val){
-        casos+=h->getCasos(p->getInfo());
+        casos=h->getCasos(p->getInfo());
+        comparacoes++;
     }
-    else if(val < h->getCidade(p->getInfo()))
-        casos= auxBusca(p->getEsq(), val);
-    else
-        casos= auxBusca(p->getDir(), val);
-        return casos;
+
+    return casos+ auxBusca(p->getDir(),val) + auxBusca(p->getEsq(), val);
+
 }
-/*
+
 void ArvoreAVL::imprime(std::ostream& o)
 {
     imprimePorNivel(raiz, 0,o);
@@ -131,38 +143,11 @@ void ArvoreAVL::imprimePorNivel(NoArv *p, int nivel,std::ostream &o)
         o << "(" << nivel << ")";
         for(int i = 1; i <= nivel; i++)
             o << "--";
-        o << p->getInfo() << endl;
+        o <<"codCidade: " << h->getCidade(p->getInfo()) << " data " << h->getData(p->getInfo())<< endl;
         imprimePorNivel(p->getEsq(), nivel+1,o);
         imprimePorNivel(p->getDir(), nivel+1,o);
     }
-}*/
-
-
-void ArvoreAVL::imprime()
-{
-    imprimePorNivel(raiz, 0);
 }
-
-void ArvoreAVL::imprimePorNivel(NoArv *p, int nivel)
-{
-    if(p != NULL)
-    {
-        cout << "(" << nivel << ")";
-        for(int i = 1; i <= nivel; i++)
-            cout << "--";
-       // cout << p->getInfo() << endl;
-        cout<< "data " << h->getData(p->getInfo()) << " codcidade " << h->getCidade(p->getInfo()) << endl;
-        imprimePorNivel(p->getEsq(), nivel+1);
-        imprimePorNivel(p->getDir(), nivel+1);
-    }
-}
-
-
-
-
-
-
-
 
 
 

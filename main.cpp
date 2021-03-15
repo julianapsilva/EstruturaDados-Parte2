@@ -4,53 +4,27 @@
 #include <string>
 #include <cstdlib>
 #include <string.h>
-#include "ArvBinBusca.h"
+#include "ArvQ.h"
 #include "hash.h"
 #include <sstream>
 #include <stdlib.h>
 #include "ArvoreAVL.h"
-#include "Arquivo.h"
 #include "ArvoreB.h"
 #include <time.h>       /* time */
-
+#include "Arquivo.h"
 #include <random>
-
+#include<queue>
 using namespace std;
-
-int j=0;
-bool Existe(int valores[],int tam, int valor){
-    for(int i = 0;i<tam;i++){
-        if(valores[i]==valor)
-            return true;
-    }
-    return false;
-}
-
-void GeraAleatorios(int numeros[],int quantNumeros,int Limite){
-    srand(time(NULL));
-
-    int v;
-    for(int i=0;i<quantNumeros;i++){
-        v = rand() % Limite;
-        while(Existe(numeros,i,v)){
-            v = rand() % Limite;
-        }
-        numeros[i] = v;
-    }
-
-}
-
-/*
 
 int random(int min, int max) {
 
-    std::random_device rd;
+   /* std::random_device rd;
     std::mt19937 gen(rd());
 
-    std::uniform_real_distribution<> distribution(min, max);
+    std::uniform_real_distribution<> distribution(min, max);*/
 
     //generating a random integer:
-   // int x = distribution(gen);
+//   int x = distribution(gen);  // se for rodar no codeblocks trocar parte comentada
 
      unsigned long x;
     x = rand();
@@ -58,33 +32,31 @@ int random(int min, int max) {
     x ^= rand();
     x %= max;
 
-    return x;
-}*/
+
+   return x;
+
+    }
 
 NodeHT* getRandomValue(HashTable* ht){
-    srand(time(NULL)); int random[10000];
-    GeraAleatorios(random,10000,10000);   cout<< "gerou " << endl;
 
     int i = 0, max = ht->getTam();
-    do{ i=random[j++];  cout<< "do " << endl;
-        //i = random(0, max);
-       // i=rand() % 32000;
-       //  cout<< "valor de i " << i << endl;
+    do{
+         i = random(0, max);
 
     } while(ht->operator[](i)==NULL);
 
-    NodeHT* n= ht->operator[](i);   cout<< "valor de i FINAL " << i << endl;
+    NodeHT* n= ht->operator[](i);
     return n;
 }
 
-/*
-void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
+
+void teste(int n, int op, HashTable* dados, ArvoreQ* loc) {
 
     ofstream filestream("filename.txt");
-    //  loc->imprime(filestream);
-        switch (op) {
+     loc->imprime(filestream);
+    switch (op) {
     case 1: {
-        HashTable h(n + n / 20);
+        HashTable h(n + n / 10);
 
         for (int i = 0; i < n; i++) {
 
@@ -97,14 +69,10 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
 
     case 2: {
         ArvoreAVL arv(dados);
-
         for (int i = 0; i < n; i++) {
-            NodeHT* m; int k;
-            do {
-                k = hashAleatorio(dados);
-                m = (dados)->operator[](k);
-            } while (arv.busca(k) || m==NULL );
-            arv.insere(k);
+
+            NodeHT* m = getRandomValue(dados);
+            arv.insere(m->data, m->codcidade);
         }
         arv.imprime((n < 20) ? cout : filestream);
 
@@ -112,20 +80,19 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
     }
 
     case 3: {
-        ArvBinBusca arv;
+        ArvoreQ arv;
         for (int i = 0; i < n; i++) {
 
             NodeHT* m;
             NoQArv* na;
             do {
                 m = (getRandomValue(dados));
-               na = loc->busca(m->codcidade);
-            } while (arv.busca(m->codcidade)!=NULL || na==nullptr);
+                na = loc->busca(m->codcidade);
+            } while (arv.busca(m->codcidade) != NULL || na == nullptr);
 
 
             arv.insere(na);
         }
-
 
         arv.imprime((n < 20) ? cout : filestream);
 
@@ -134,57 +101,124 @@ void teste(int n,int op,HashTable* dados,ArvBinBusca*loc){
 
 
     case 4: {
-        ArvoreB arv(4,dados);
+        ArvoreB arv(4, dados);
 
         for (int i = 0; i < n; i++) {
 
-
-            NodeHT* m; int k;
-            do {
-                k = hashAleatorio(dados);
-                m = (dados)->operator[](k);
-            } while (arv.busca(k)!=-1 || m == NULL);
-
-            arv.insere(m->codcidade);
+            NodeHT* m = getRandomValue(dados);
+            arv.insere(m->data, m->codcidade);
         }
         arv.imprime((n < 20) ? cout : filestream);
 
         break;
     }
     }
+}
 
+void s1(ArvoreB *ab,ArvoreAVL*avl,  int cod) {
 
-}*/
-void analiseBusca(int n, HashTable* h, int codCidade) {  cout<< "chamoiu busca " << endl;
-ofstream filestream("filename.txt");
-    ArvoreAVL avl(h); ArvoreB bMenor(5, h); ArvoreB bMaior(200, h); NodeHT *m;
+    int aux = ab->busca(cod);
+    //cout << endl << "ARVORE B(20) FEZ " << " COMPARACORES COM RESULTADO =" <<aux<< endl;
+    aux= avl->busca(cod);
+    cout << endl << "ARVORE AVL FEZ " << avl->getComparacoes() << " COMPARACORES COM RESULTADO =" <<aux<< endl;
+    cout << endl << "BUSCA S1 CONCLUIDA" << endl;
 
-    //for (int t = 0; t < 5; t++) {   // 5 diferentes conjuntos
-        for (int i = 0; i < n; i++) {   cout<< "for index  "<<  i  << endl;
-          cout<< "indo gerar aleatorio " << endl;
-          m=getRandomValue(h);
-           // avl.insere(m->data,m->codcidade);    cout<< "INSERIU " << endl;
+}
 
-          //  m=getRandomValue(h);
-            bMenor.insere(m->data,m->codcidade);
-            bMenor.imprime();
-        /*    m=getRandomValue(h);
-            bMaior.insere(m->data,m->codcidade);*/
+void s2(ArvoreQ *Q,ArvoreB *ab,ArvoreAVL* avl, double x0,double x1,double y0,double y1) {
+/*
+    queue<NoQArv> lista;
+    lista = Q->listaZona(coord{ x0,y0 }, coord{ x1,y1 });
+    int count=0;
+
+    while (!lista.empty())
+    {
+        count += ab->busca(lista.front().getCodC());
+        lista.pop();
+
+    }
+    cout << endl << "ARVORE B  GASTOU X SEGUNDOS E FEZ Y COMPARACORES COM RESULTADO =" << count << endl;
+
+    count = 0;
+    lista= Q->listaZona(coord{ x0,y0 }, coord{ x1,y1 });
+
+    while (!lista.empty())
+    {
+        count += avl->busca(lista.front().getCodC());
+        lista.pop();
+
+    }
+    cout << endl << "ARVORE AVL  GASTOU X SEGUNDOS E FEZ Y COMPARACORES COM RESULTADO =" << count << endl;
+
+    cout << endl << "BUSCA S2 CONCLUIDA" << endl;
+*/
+}
+void insere(ArvoreB* bMaior, ArvoreB* ab, ArvoreAVL* av,int n,HashTable *h) {
+    NodeHT* m = NULL;  long double tempo=0;
+    for (int i = 0; i < n; i++) {
+        m = getRandomValue(h);
+        ab->insere(m->data, m->codcidade);
+        tempo+=ab->getTempoInsercao();
+    }
+    cout<< "TEMPO DE INSERCAO ARVORE B d(20) " << tempo << endl;
+    tempo=0;
+    for(int i=0;i<n;i++){
+        m = getRandomValue(h);
+        bMaior->insere(m->data,m->codcidade);
+        tempo+=bMaior->getTempoInsercao();
+    }
+    cout<< "TEMPO DE INSERCAO ARVORE B d(200) " << tempo << endl;
+    tempo=0;
+    for (int i = 0; i < n; i++) {
+        m = getRandomValue(h);
+        av->insere(m->data, m->codcidade);
+        tempo+=av->getTempoInsercao();
+    }
+    cout<< "TEMPO DE INSERCAO ARVORE AVL " << tempo << endl;
+}
+
+void executa(int n, HashTable* h,ArvoreQ* Q) {
+
+    ArvoreAVL* avl=new ArvoreAVL(h); ArvoreB *bMenor=new ArvoreB(20, h); ArvoreB *bMaior= new ArvoreB(200,h);
+    cout <<endl<<endl<< "EXECUTANDO MODULO PRINCIPAL"<<endl;
+    int k;
+    do {
+        cout << endl <<"DIGITE:"<<endl<<" 1 INSERCAO "<< endl << " 2 S1  " << endl << " 3 S2 " << endl;
+        cin >> k;
+        switch (k) {
+        case 1:
+            avl = new ArvoreAVL(h);
+            bMenor = new ArvoreB(20, h);
+            bMaior=new ArvoreB(200,h);
+            insere(bMaior,bMenor, avl, n, h);
+            break;
+        case 3:
+            cout << "DIGITE X0 X1 Y0 Y1";
+            int x0, x1, y0, y1;
+            cin >> x0;
+            cin >> x1;
+            cin >> y0;
+            cin >> y1;
+            s2(Q, bMenor, avl, x0, x1, y0, y1);
+            break;
+        case 2:
+            cout << "DIGITE O CODIGO DA CIDADE";
+            int a;
+            cin >> a;
+            s1(bMenor, avl, a);
+            break;
         }
 
+    } while (k != -1);
+}
+void printLista(queue<NoQArv> n) {
 
+    while (!n.empty())
+    {
+        cout << n.front().toString()<<endl;
+        n.pop();
 
-        //BUSCA S1
-       /* cout << avl.busca(codCidade);
-        cout << bMenor.busca(codCidade);
-        cout << bMenor.busca(codCidade);*/
-
-        //FALTA BUSCAS2
-
-   // }
-
-    avl.imprime();
-
+    }
 }
 
 int main()
@@ -192,17 +226,39 @@ int main()
 
     Arquivo arq;
     HashTable* ht = new HashTable(2000069);
-    ArvBinBusca* Q = new ArvBinBusca();
-    arq.leArqProcessado(ht, "processado.csv", 100000);
-    arq.leArqCord(Q, "coordenadas.csv", -1);
+    ArvoreQ* Q = new ArvoreQ();
+    arq.leArqProcessado(ht, "processado.csv",1000000);
+    cout<< "terminou processado " << endl;
+    arq.leArqCord(Q, "coordenadas.csv", 5000);
 
-  analiseBusca(50, ht, 509786);
 
-//   teste(50, 1, ht, Q);
-  // teste(50, 2, ht, Q);
- //  teste(50,3,ht,Q);
-  // teste(50, 4, ht, Q);
-  cout<< "-------- TERMINOU -------" << endl;
+    int op,ed,n=0;
+    do {
+        cout << "1- MODULO DE TESTES" << endl << "2- ANALISE DE BUSCAS" << endl << "3- SAIR"<< endl;
+        cin >> op;
+
+        if (op == 1)
+        {
+            cout << "1- Hash" << endl << "2- AVL" << endl << "3- QUAD" << endl<<"4- B"<<endl<<"5-SAIR";
+            cin >> ed;
+            if (ed == 5)
+                op = 10;
+
+        }
+        if(op==1 || op==2)
+            do {
+                cout << endl << "DIGITE O TAMANHO DA ENTRADA" << endl;
+                cin >> n;
+            } while (n <= 0);
+
+        if (op == 2)
+           executa(n, ht, Q);
+        if (op == 1)
+            teste(n, ed, ht, Q);
+
+    } while (op != 3);
+
+
 
     return 0;
 }

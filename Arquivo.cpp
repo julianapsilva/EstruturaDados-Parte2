@@ -4,17 +4,18 @@
 #include <string>
 #include <cstdlib>
 #include <string.h>
-#include "ArvBinBusca.h"
+#include "ArvQ.h"
 #include "hash.h"
 #include "Arquivo.h"
 #include <sstream>
 #include <stdlib.h>
 #include "ArvoreB.h"
+using namespace std;
 
 
 int Arquivo::leArqProcessado(HashTable* ht, string endr,int n)
-{
-    ifstream arq(endr);
+{   cout<< "iniciando a leitura do arquivo processado" << endl;
+    std::ifstream arq(endr);
     if(!arq.is_open())
         return -1;
     string str;
@@ -41,10 +42,11 @@ int Arquivo::leArqProcessado(HashTable* ht, string endr,int n)
             break;
     }
     return 0;
-
+cout<< "leitura concluida" << endl;
 }
-int Arquivo::leArqCord(ArvBinBusca* ht, string endr, int n) {
-    ifstream arq(endr);
+int Arquivo::leArqCord(ArvoreQ* ht, string endr, int n) {
+    cout<< "iniciando a leitura do arquivo coordenadas" << endl;
+    std::ifstream arq(endr);
     if (!arq.is_open())
         return -1;
     string str;
@@ -62,9 +64,9 @@ int Arquivo::leArqCord(ArvBinBusca* ht, string endr, int n) {
         subdado = strtok(NULL, ",");
         string nome = subdado;
         subdado = strtok(NULL, ",");
-        int x = atoi(subdado);
+        double x = atof(subdado);
         subdado = strtok(NULL, ",");
-        int  y = atoi(subdado);
+        double  y = atof(subdado);
         subdado = strtok(NULL, ",");
         int  cap = atoi(subdado);
         ht->insere(estado,  cidade,nome, x,y,cap);
@@ -72,5 +74,5 @@ int Arquivo::leArqCord(ArvBinBusca* ht, string endr, int n) {
             break;
     }
     return 0;
-
+cout<< "leitura concluida" << endl;
 }

@@ -2,20 +2,22 @@
 #define ARVOREB_H_INCLUDED
 #include "NoB.h"
 
-class ArvoreB
-{
-    private:
+class ArvoreB {
+private:
     NoB* raiz;
-    HashTable *t;
-    int ordem;
+    int dMin;
+    HashTable* h;
+    long double tempoInsercao;
+    long double tempoBusca;
+    int comparacoes=0;
 
-    public:
-    ArvoreB(int ordem);
-    ArvoreB(int dMin, HashTable *t);
+public:
+    ArvoreB(int dMin, HashTable* h);
     void insere(string data, int codCidade);
-    int busca(int val);
-    void imprime(ostream &o);
-    void imprime();
+    void imprime(std::ostream&);
+    long double getTempoInsercao(){ return tempoInsercao;};
+    long double getTempoBusca(){ return tempoBusca;};
+    int busca(int codigo);
 };
 
 
